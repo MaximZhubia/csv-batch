@@ -1,7 +1,7 @@
 Template compile command:
 
 mvn compile exec:java \
-     -Dexec.mainClass=com.example.myclass \
+     -Dexec.mainClass=max.dataflow.csv.batch.CsvBatchPipelineRun \
      -Dexec.args="--runner=DataflowRunner \
                   --project=max-data-flow-scv-1 \
                   --region=europe-west1 \

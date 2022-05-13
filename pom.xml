@@ -26,6 +26,7 @@
         <opencsv.version>5.5.2</opencsv.version>
         <slf4j.version>1.7.32</slf4j.version>
         <junit.version>5.8.2</junit.version>
+        <testcontainers.version>1.16.2</testcontainers.version>
 
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -48,6 +49,24 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -159,7 +178,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.davita.cwow.encounter.batch.calendar.EncounterBatchCalendarPipeline</mainClass>
+                                    <mainClass>max.dataflow.csv.batch.CsvBatchPipelineRun</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
@@ -200,7 +219,7 @@
                 <version>${maven-exec-plugin.version}</version>
                 <configuration>
                     <cleanupDaemonThreads>false</cleanupDaemonThreads>
-                    <mainClass>com.davita.cwow.encounter.batch.calendar.EncounterBatchCalendarPipeline</mainClass>
+                    <mainClass>max.dataflow.csv.batch.CsvBatchPipelineRun</mainClass>
                 </configuration>
             </plugin>
             <plugin>
