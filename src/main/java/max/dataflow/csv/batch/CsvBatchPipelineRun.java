@@ -46,7 +46,6 @@ public class CsvBatchPipelineRun {
   }
 
   private void createPipelineSteps() {
-    pipeline
-        .apply("Start batch job", new StartCsvBatchJobTransform());
+    pipeline.apply("Start batch job", new StartCsvBatchJobTransform());
   }
 }
