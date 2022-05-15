@@ -27,19 +27,21 @@ public class StartCsvBatchJobTransform extends PTransform<PBegin, PDone> {
 
     // CSV Type1 content
     PCollection<String> csvType1Content =
-        input.getPipeline().apply("Read CSV Type1 file", TextIO.read().from(filePath1));
+        input.getPipeline().apply("Read CSV Type1 files", TextIO.read().from(filePath1));
 
     // CSV Type1 header view
     PCollectionView<List<String>> csvType1HeaderView =
-        csvType1Content.apply("Get CSV header", new RetrieveCsvHeaderTransform(filePath1));
+        csvType1Content.apply(
+            "Get CSV header Type1 files", new RetrieveCsvHeaderTransform(filePath1));
 
     // CSV Type2 content
     PCollection<String> csvType2Content =
-        input.getPipeline().apply("Read CSV Type1 file", TextIO.read().from(filePath2));
+        input.getPipeline().apply("Read CSV Type2 files", TextIO.read().from(filePath2));
 
     // CSV Type2 header view
     PCollectionView<List<String>> csvType2HeaderView =
-        csvType2Content.apply("Get CSV header", new RetrieveCsvHeaderTransform(filePath2));
+        csvType2Content.apply(
+            "Get CSV header Type2 files", new RetrieveCsvHeaderTransform(filePath2));
 
     // Create View<Map<Boolean, KV<Integer, Integer>>> that contains mapping between Type1 and Type2
     // columns:
