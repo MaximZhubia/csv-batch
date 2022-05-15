@@ -1,6 +1,7 @@
 package max.dataflow.csv.batch.functions;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.join.CoGbkResult;
 import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.TupleTag;
+import org.apache.commons.lang3.BooleanUtils;
 
 @RequiredArgsConstructor
 public class CsvFilesMappingFn extends DoFn<KV<String, CoGbkResult>, String> {
@@ -27,8 +29,11 @@ public class CsvFilesMappingFn extends DoFn<KV<String, CoGbkResult>, String> {
             .collect(Collectors.toList());
     // Make Left Join between CSVRowsType1 and CSVRowsType2
     associatedCSVRowsType1.forEach(
-        rowType1 ->
-            associatedCSVRowsType2.forEach(
-                rowType2 -> context.output(String.join(",", rowType1, rowType2))));
+        rowType1 -> {
+          if (BooleanUtils.isFalse(associatedCSVRowsType2.isEmpty())) {
+            int randomIndex = new Random().nextInt(associatedCSVRowsType2.size());
+            context.output(String.join(",", rowType1, associatedCSVRowsType2.get(randomIndex)));
+          }
+        });
   }
 }

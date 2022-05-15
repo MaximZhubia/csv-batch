@@ -15,6 +15,7 @@ import org.apache.beam.sdk.io.FileIO;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
+import org.apache.beam.sdk.transforms.Sample;
 import org.apache.beam.sdk.transforms.View;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionView;
@@ -35,6 +36,7 @@ public class RetrieveCsvHeaderTransform
         .getPipeline()
         .apply(FileIO.match().filepattern(filePath))
         .apply(FileIO.readMatches())
+        .apply(Sample.any(1))
         .apply(
             ParDo.of(
                 new DoFn<FileIO.ReadableFile, List<String>>() {
