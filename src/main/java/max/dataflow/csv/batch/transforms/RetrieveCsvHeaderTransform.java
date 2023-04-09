@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.Channels;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import max.dataflow.csv.batch.CsvBatchOptions;
 import org.apache.beam.sdk.io.FileIO;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;
@@ -31,7 +32,6 @@ public class RetrieveCsvHeaderTransform
 
   @Override
   public PCollectionView<List<String>> expand(PCollection<String> input) {
-    CsvBatchOptions options = input.getPipeline().getOptions().as(CsvBatchOptions.class);
     return input
         .getPipeline()
         .apply(FileIO.match().filepattern(filePath))
@@ -43,9 +43,9 @@ public class RetrieveCsvHeaderTransform
                   @ProcessElement
                   public void process(ProcessContext context) throws IOException {
                     try (InputStream inputStream =
-                        Channels.newInputStream(context.element().open())) {
+                        Channels.newInputStream(Objects.requireNonNull(context.element()).open())) {
                       InputStreamReader inputStreamReader =
-                          new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+                          new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                       BufferedReader reader = new BufferedReader(inputStreamReader);
                       String line = reader.readLine();
                       if (StringUtils.isNotEmpty(line)) {

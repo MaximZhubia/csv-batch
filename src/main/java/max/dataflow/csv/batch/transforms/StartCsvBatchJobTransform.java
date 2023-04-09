@@ -43,9 +43,8 @@ public class StartCsvBatchJobTransform extends PTransform<PBegin, PDone> {
         csvType2Content.apply(
             "Get CSV header Type2 files", new RetrieveCsvHeaderTransform(filePath2));
 
-    // Create View<Map<Boolean, KV<Integer, Integer>>> that contains mapping between Type1 and Type2
+    // Create View<Map<Integer, Integer>> that contains mapping between Type1 and Type2
     // columns:
-    // - Boolean indicates that matching is existing;
     // - first Integer is number of column in csvType1Content;
     // - second Integer is number of column in scvType2Content;
     PCollectionView<Map<Integer, Integer>> columnsMappingView =
